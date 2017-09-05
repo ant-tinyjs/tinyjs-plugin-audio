@@ -43,6 +43,22 @@ p {font-size: 32px;text-align: center;padding: 20px 0;}
   bottom: 0;
   padding-top: 150px;
 }
+
+.toast {
+  display: none;
+  position: absolute;
+  width: 140px;
+  height: 60px;
+  background: rgba(0, 0, 0, .5);
+  text-align: center;
+  line-height: 60px;
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  margin-left: -70px;
+  margin-top: -30px;
+  border-radius: 10px;
+}
 </style>
 </head>
 <body>
@@ -55,6 +71,7 @@ p {font-size: 32px;text-align: center;padding: 20px 0;}
   <p>上滑增加音量(+)</p>
   <p>下滑减少音量(-)</p>
 </div>
+<div class="toast"></div>
 <script>window.disableWebAudio = false;</script>
 <script src="https://a.alipayobjects.com/g/tiny/tiny/1.1.4/tiny.js"></script>
 <script src="../dist/index.js"></script>
@@ -69,6 +86,8 @@ p {font-size: 32px;text-align: center;padding: 20px 0;}
     var analyser = new Tiny.audio.com.AudioAnalyser(music, 2048);
     var graphics = new Tiny.Graphics();
     var win = Tiny.WIN_SIZE;
+    var isMobile = /ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|win ce/i.test(navigator.userAgent);
+    var $volumeToast = document.querySelector('.toast');
     var tinyText = new Tiny.Text('Tiny.js', {
       fontFamily: 'Arial',
       fontSize: 80,
@@ -95,37 +114,41 @@ p {font-size: 32px;text-align: center;padding: 20px 0;}
     });
 
     var y;
-    document.body.addEventListener('touchstart', function(e) {
-      var touch = e.touches[0];
+    document.body.addEventListener(isMobile && 'touchstart' || 'mousedown', function(e) {
+      var touch = isMobile && e.touches[0] || e;
       y = touch.pageY;
       window.flag = true;
     });
 
-    document.body.addEventListener('touchmove', function(e) {
+    document.body.addEventListener(isMobile && 'touchmove' || 'mousemove', function(e) {
       if(!window.flag) {
         return;
       }
 
-      var nowY = e.touches[0].pageY;
+      var nowY = isMobile && e.touches[0].pageY || e.pageY;
       if(nowY > y) {
-        if(music.volume - 0.1 < 0) {
+        if(music.volume - 0.01 < 0) {
           music.volume = 0;
         } else {
-          music.volume -= 0.1;
+          music.volume -= 0.01;
         }
       } else {
-        if(music.volume + 0.1 > 1) {
+        if(music.volume + 0.01 > 1) {
           music.volume = 1;
         } else {
-          music.volume += 0.1;
+          music.volume += 0.01;
         }
       }
 
       y = nowY;
+
+      $volumeToast.style.display = 'block';
+      $volumeToast.innerHTML = '音量：' + (100 * music.volume).toFixed(0);
     });
 
-    document.body.addEventListener('touchend', function(e) {
+    document.body.addEventListener(isMobile && 'touchend' || 'mouseup', function(e) {
       window.flag = false;
+      $volumeToast.style.display = 'none';
     });
 
     var config = {
