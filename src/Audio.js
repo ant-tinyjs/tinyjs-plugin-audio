@@ -218,10 +218,10 @@ class Audio extends Tiny.EventEmitter {
   }
 
   set muted(value) {
-    if(utils.isWebAudioSupported) {
+    if (utils.isWebAudioSupported) {
       this.mute = value;
 
-      if(!value) {
+      if (!value) {
         this.gainNode.gain.value = this.previousVolume;
         return;
       }
