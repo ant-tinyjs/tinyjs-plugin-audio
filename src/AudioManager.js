@@ -49,7 +49,7 @@ class AudioManager {
     value = (value !== false);
 
     this.sounds.forEach((item) => {
-      if (!value && item._paused) {
+      if (!value && item._paused !== false) {
         item.play();
 
         return true;
