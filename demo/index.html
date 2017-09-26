@@ -77,11 +77,12 @@ p {font-size: 32px;text-align: center;padding: 20px 0;}
 <script src="../dist/index.js"></script>
 <script type="text/javascript">
   // 加载音频并循环播放
-  Tiny.Loader.add([
+  var loader = new Tiny.loaders.Loader();
+  loader.add([
     {name: 'music', url: 'https://gw.alipayobjects.com/os/rmsportal/OifrJuNotDkpBqTVpFAg.mp3'}
   ]);
 
-  Tiny.Loader.load(function(e){
+  loader.load(function(e){
     var music = Tiny.audio.manager.getAudio('music');
     var analyser = new Tiny.audio.com.AudioAnalyser(music, 2048);
     var graphics = new Tiny.Graphics();
