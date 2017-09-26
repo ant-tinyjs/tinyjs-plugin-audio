@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>tinyjs-plugin-audio DEMO</title>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="apple-touch-fullscreen"/>
+<meta content="telephone=no,email=no" name="format-detection"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+<style>
+html, body, p, div {margin:0;padding:0;}
+p {font-size: 32px;text-align: center;padding: 20px 0;}
+.tiny-audio-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.tiny-audio-control p {
+  display: inline-block;
+  margin-left: 7px;
+  width: 30%;
+}
+
+.tiny-audio-control a {
+  display: block;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  background: rgba(255, 255, 255, .5);
+  border-radius: 25px;
+  text-decoration: none;
+  color: #000;
+}
+
+.mask {
+  position: fixed;
+  background: rgba(0, 0, 0, .7);
+  color: #fff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 150px;
+}
+
+.toast {
+  display: none;
+  position: absolute;
+  width: 140px;
+  height: 60px;
+  background: rgba(0, 0, 0, .5);
+  text-align: center;
+  line-height: 60px;
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  margin-left: -70px;
+  margin-top: -30px;
+  border-radius: 10px;
+}
+</style>
+</head>
+<body>
+<div class="tiny-audio-control">
+  <p><a href="javascript:;" id="J-playBtn">播放</a></p>
+  <p><a href="javascript:;" id="J-pauseBtn">暂停</a></p>
+  <p><a href="javascript:;" id="J-stopBtn">停止</a></p>
+</div>
+<div class="mask">
+  <p>上滑增加音量(+)</p>
+  <p>下滑减少音量(-)</p>
+</div>
+<div class="toast"></div>
+<script>window.disableWebAudio = false;</script>
+<script src="https://a.alipayobjects.com/g/tiny/tiny/1.1.4/tiny.js"></script>
+<script src="../dist/index.js"></script>
+<script type="text/javascript">
+  var config = {
+    showFPS: true, // 显示帧频
+    dpi: 1.5, // 分辨率,
+    fixSize: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    renderOptions: {
+      backgroundColor: 0x2a3145 // 画布背景色
+    }
+  };
+  // 新建App
+  var app = new Tiny.Application(config);
+
+  // 加载音频并循环播放
+  var loader = new Tiny.loaders.Loader();
+  loader.add({
+    name: 'music',
+    url: 'https://gw.alipayobjects.com/os/rmsportal/OifrJuNotDkpBqTVpFAg.mp3'
+  });
+
+  loader.load(function(e){
+    var music = Tiny.audio.manager.getAudio('music');
+    var analyser = new Tiny.audio.com.AudioAnalyser(music, 2048);
+    var graphics = new Tiny.Graphics();
+    var win = Tiny.WIN_SIZE;
+    var isMobile = /ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|win ce/i.test(navigator.userAgent);
+    var $volumeToast = document.querySelector('.toast');
+    var tinyText = new Tiny.Text('Tiny.js', {
+      fontFamily: 'Arial',
+      fontSize: 80,
+      fill: 'rgba(255, 255, 255, .8)',
+      align: 'center'
+    });
+    var mask = document.querySelector('.mask');
+
+    Tiny.ticker.shared.countDown({
+      duration: 1e3,
+      times: 1,
+      complete: function () {
+        document.body.removeChild(mask);
+      }
+    });
+    music.loop = true;
+    music.volume = 0.5;
+    document.getElementById('J-playBtn').addEventListener('click', function () {
+      music.play();
+    });
+
+    document.getElementById('J-pauseBtn').addEventListener('click', function () {
+      music.pause();
+    });
+
+    document.getElementById('J-stopBtn').addEventListener('click', function () {
+      music.stop();
+    });
+
+    var y;
+    document.body.addEventListener(isMobile && 'touchstart' || 'mousedown', function(e) {
+      var touch = isMobile && e.touches[0] || e;
+      y = touch.pageY;
+      window.flag = true;
+    });
+
+    document.body.addEventListener(isMobile && 'touchmove' || 'mousemove', function(e) {
+      if(!window.flag) {
+        return;
+      }
+
+      var nowY = isMobile && e.touches[0].pageY || e.pageY;
+      if(nowY > y) {
+        if(music.volume - 0.01 < 0) {
+          music.volume = 0;
+        } else {
+          music.volume -= 0.01;
+        }
+      } else {
+        if(music.volume + 0.01 > 1) {
+          music.volume = 1;
+        } else {
+          music.volume += 0.01;
+        }
+      }
+
+      y = nowY;
+
+      $volumeToast.style.display = 'block';
+      $volumeToast.innerHTML = '音量：' + (100 * music.volume).toFixed(0);
+    });
+
+    document.body.addEventListener(isMobile && 'touchend' || 'mouseup', function(e) {
+      window.flag = false;
+      $volumeToast.style.display = 'none';
+    });
+
+    // 新建场景
+    var StartLayer = function () {
+      var self = this;
+      Tiny.Container.call(this);
+
+      //主调度调用绘制方法
+      app.onUpdate(function() {
+        var data = analyser.getFrequencyData();
+        var avgData = analyser.getAverageFrequency();
+        avgData && self.draw(data, avgData);
+      });
+
+      //绘制文字
+      tinyText.setAnchor(0.5, 0.5);
+      tinyText.position.x = win.width / 2;
+      tinyText.position.y = win.height / 2;
+      this.addChild(tinyText);
+    };
+    StartLayer.prototype = Object.create(Tiny.Container.prototype);
+    StartLayer.prototype.constructor = StartLayer;
+    StartLayer.prototype.draw = function(data, avgData) {
+      var scale = avgData / 255;
+      var x = 0;
+      var y = Tiny.WIN_SIZE.height / 1.1;
+
+      graphics.clear();
+      graphics.lineStyle(8 * scale, '0x00FF66', scale);
+
+      //绘制圆形
+      graphics.drawCircle(win.width / 2, win.height / 2, 250 * scale);
+      graphics.closePath();
+
+      //根据频域数据绘制折线
+      graphics.moveTo(x, y);
+      for(var i = 0; i < data.length; i++) {
+        if(data[i * 4]) {
+          x = i * 10;
+          y = win.height / 1.1 - data[i * 4];
+          graphics.lineTo(x, y);
+        }
+      }
+
+      tinyText.setOpacity(1 - scale);
+      tinyText.setScale(1 - scale);
+      this.addChild(graphics);
+    };
+    // 启动
+    app.run(new StartLayer());
+  });
+</script>
+</body>
+</html>

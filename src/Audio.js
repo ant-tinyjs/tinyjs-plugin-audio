@@ -140,7 +140,7 @@ class Audio extends Tiny.EventEmitter {
     this._lastPauseTime = 0;
     this._offsetTime = 0;
     this.playing = false;
-    this._paused = null;
+    this._paused = false;
     if (utils.isWebAudioSupported) {
       this.audio = null;
     }
@@ -208,7 +208,7 @@ class Audio extends Tiny.EventEmitter {
 }
 
 Audio.prototype._loop = false;
-Audio.prototype._paused = null;
+Audio.prototype._paused = false;
 Audio.prototype._startTime = 0;
 Audio.prototype._lastPauseTime = 0;
 Audio.prototype._offsetTime = 0;

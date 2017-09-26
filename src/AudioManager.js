@@ -1,4 +1,4 @@
-import {com} from './index';
+import { com } from './index';
 import Audio from './Audio';
 
 /**
@@ -49,7 +49,7 @@ class AudioManager {
     value = (value !== false);
 
     this.sounds.forEach((item) => {
-      if (!value && item._paused !== false) {
+      if (!value && item._paused) {
         item.play();
 
         return true;
