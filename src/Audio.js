@@ -96,7 +96,7 @@ class Audio extends Tiny.EventEmitter {
     this.emit('stop');
 
     if (utils.isWebAudioSupported) {
-      this.source.stop(0);
+      this.source && this.source.stop(0);
       this._paused = false;
       this._startTime = this.context.currentTime;
     } else {
