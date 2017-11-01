@@ -50,7 +50,6 @@ class Audio extends Tiny.EventEmitter {
   play() {
     if (this.playing) return this;
 
-    this.playing = true;
     this.emit('play');
 
     if (utils.isWebAudioSupported) {
@@ -84,6 +83,7 @@ class Audio extends Tiny.EventEmitter {
       this.audio.play();
     }
 
+    this.playing = true;
     return this;
   }
 
@@ -96,7 +96,7 @@ class Audio extends Tiny.EventEmitter {
     this.emit('stop');
 
     if (utils.isWebAudioSupported) {
-      this.source.stop(0);
+      this.source && this.source.stop(0);
       this._paused = false;
       this._startTime = this.context.currentTime;
     } else {
@@ -189,8 +189,8 @@ class Audio extends Tiny.EventEmitter {
   }
 
   /**
-   * 音频音量调节
-   * @value {number} range(0, 1)
+   * 音频音量调节range(0, 1)
+   * @param {number} value 音量的值
    * @member {Tiny.audio.com.Audio}
    * @default 1
    */
@@ -199,10 +199,36 @@ class Audio extends Tiny.EventEmitter {
   }
 
   set volume(value) {
+    this.previousVolume = value;
     if (utils.isWebAudioSupported) {
       this.gainNode.gain.value = value;
     } else {
       this.audio.volume = value;
+    }
+  }
+
+  /**
+   * 设置音频静音
+   * @param {boolean} value 是否静音
+   * @member {Tiny.audio.com.Audio}
+   * @default false
+   */
+  get muted() {
+    return utils.isWebAudioSupported ? this.mute : this.audio.muted;
+  }
+
+  set muted(value) {
+    if (utils.isWebAudioSupported) {
+      this.mute = value;
+
+      if (!value) {
+        this.gainNode.gain.value = this.previousVolume;
+        return;
+      }
+
+      this.gainNode.gain.value = 0;
+    } else {
+      this.audio.muted = value;
     }
   }
 }
@@ -212,6 +238,8 @@ Audio.prototype._paused = false;
 Audio.prototype._startTime = 0;
 Audio.prototype._lastPauseTime = 0;
 Audio.prototype._offsetTime = 0;
+Audio.prototype.previousVolume = 1;
+Audio.prototype.mute = false;
 
 /**
  * 音效是否正在播放
