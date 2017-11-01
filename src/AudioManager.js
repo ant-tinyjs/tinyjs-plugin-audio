@@ -1,4 +1,4 @@
-import {com} from './index';
+import { com } from './index';
 import Audio from './Audio';
 
 /**
