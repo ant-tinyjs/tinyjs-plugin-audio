@@ -14,8 +14,8 @@
 
 - 也可以直接引用线上cdn地址，注意要使用最新的版本号，例如：
 
-  - https://a.alipayobjects.com/g/tiny-plugins/tinyjs-plugin-audio/1.0.0/index.js
-  - https://a.alipayobjects.com/g/tiny-plugins/tinyjs-plugin-audio/1.0.0/index.debug.js
+  - https://a.alipayobjects.com/g/tiny-plugins/tinyjs-plugin-audio/1.1.0/index.js
+  - https://a.alipayobjects.com/g/tiny-plugins/tinyjs-plugin-audio/1.1.0/index.debug.js
 
 ## 起步
 首先当然是要引入，推荐`NPM`方式，当然你也可以使用`CDN`或下载独立版本，先从几个例子入手吧！
@@ -24,7 +24,7 @@
 
 引用 Tiny.js 源码
 ``` html
-<script src="https://a.alipayobjects.com/g/tiny/tiny/1.1.4/tiny.js"></script>
+<script src="https://a.alipayobjects.com/g/tiny/tiny/1.1.5/tiny.js"></script>
 ```
 ``` js
 require('tinyjs-plugin-audio');
