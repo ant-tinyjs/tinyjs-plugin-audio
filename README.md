@@ -53,7 +53,7 @@ loader.add([
   //简单的示例，最终以实际情况为准。
   var ua = window.navigator.userAgent;
   var matches = ua.match(/Version\/(\d+)/);
-  if(ua.indexOf(iPhone) > -1 && matches[1] >= 10) {
+  if(ua.indexOf('iPhone') > -1 && matches[1] >= 10) {
     window.disableWebAudio = false;
   } else {
     window.disableWebAudio = true;
