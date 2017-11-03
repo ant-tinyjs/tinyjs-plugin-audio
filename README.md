@@ -46,6 +46,20 @@ loader.add([
 - `Tiny.js`: [Link](http://tinyjs.net/#/docs/api)
 
 ## 注意事项
+- ios11 对于音频播放更加严格，建议ios10及以上全部使用web audio模式播放。
+  - 当使用disableWebAudio模式时（即使用audioelement播放），会导致load被堵塞无法完成加载。因为ios11把音频加载完全阻止。
+
+  ```js
+  //简单的示例，最终以实际情况为准。
+  var ua = window.navigator.userAgent;
+  var matches = ua.match(/Version\/(\d+)/);
+  if(ua.indexOf(iPhone) > -1 && matches[1] >= 10) {
+    window.disableWebAudio = false;
+  } else {
+    window.disableWebAudio = true;
+  }
+  //安卓根据设备自行判断机型决定使用哪种模式。
+  ```
 - ios10以下对audioContext支持不好。会出现播放音频迟缓，杂音很重甚至会听不到音乐。
 
   - 建议ios10以下使用audio标签方式播放。使用姿势，在引入tinyjs-plugin-audio之前，配置window.disableWebAudio = true，即可。
