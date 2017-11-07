@@ -50,10 +50,11 @@ loader.add([
   - 当使用disableWebAudio模式时（即使用audioelement播放），会导致load被堵塞无法完成加载。因为ios11把音频加载完全阻止。
 
   ```js
-  //简单的示例，最终以实际情况为准。
+  //简单的示例，最终以实际情况为准。(注意ios8模拟器ua存在问题，8.3以后得到修复。)
   var ua = window.navigator.userAgent;
-  var matches = ua.match(/Version\/(\d+)/);
-  if(ua.indexOf('iPhone') > -1 && matches[1] >= 10) {
+  var matchesSafari = ua.match(/Version\/(\d+)/);
+  var matchOS = ua.match(/OS\s(\d+)/);
+  if(ua.indexOf('iPhone') > -1 && (matchOS[1] >= 10 || matchesSafari[1] >= 10)) {
     window.disableWebAudio = false;
   } else {
     window.disableWebAudio = true;
