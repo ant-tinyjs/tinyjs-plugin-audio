@@ -53,8 +53,8 @@ loader.add([
   //简单的示例，最终以实际情况为准。(注意ios8模拟器ua存在问题，8.3以后得到修复。)
   var ua = window.navigator.userAgent;
   var matchesSafari = ua.match(/Version\/(\d+)/);
-  var matchOS = ua.match(/OS\s(\d+)/);
-  if(ua.indexOf('iPhone') > -1 && (matchOS[1] >= 10 || matchesSafari[1] >= 10)) {
+  var matchesOS = ua.match(/OS\s(\d+)/);
+  if(ua.indexOf('iPhone') > -1 && (matchesOS[1] >= 10 || matchesSafari[1] >= 10)) {
     window.disableWebAudio = false;
   } else {
     window.disableWebAudio = true;
