@@ -45,6 +45,10 @@ loader.add([
 ## 依赖
 - `Tiny.js`: [Link](http://tinyjs.net/#/docs/api)
 
+## API文档
+
+http://tinyjs.net/#/plugins/tinyjs-plugin-audio/docs
+
 ## 注意事项
 - iOS 11 对于音频播放更加严格，建议 iOS 10 及以上全部使用 WebAudio 模式播放。
   - 当使用 `disableWebAudio` 模式时（即使用 `AudioElement` 播放），会导致 load 被堵塞无法完成加载。因为 iOS 11 把音频加载完全阻止。
