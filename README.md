@@ -4,7 +4,7 @@
 
 ## 查看demo
 
-http://tinyjs.net/#/plugins/tinyjs-plugin-audio/demo
+http://tinyjs.net/plugins/tinyjs-plugin-audio.html#demo
 
 ## 引用方法
 
@@ -24,7 +24,7 @@ http://tinyjs.net/#/plugins/tinyjs-plugin-audio/demo
 
 引用 Tiny.js 源码
 ``` html
-<script src="https://gw.alipayobjects.com/as/g/tiny/tiny/1.1.5/tiny.js"></script>
+<script src="https://gw.alipayobjects.com/as/g/tiny/tiny/1.1.7/tiny.js"></script>
 ```
 ``` js
 require('tinyjs-plugin-audio');
@@ -43,11 +43,11 @@ loader.add([
 ```
 
 ## 依赖
-- `Tiny.js`: [Link](http://tinyjs.net/#/docs/api)
+- `Tiny.js`: [Link](http://tinyjs.net/api)
 
 ## API文档
 
-http://tinyjs.net/#/plugins/tinyjs-plugin-audio/docs
+http://tinyjs.net/plugins/tinyjs-plugin-audio.html#docs
 
 ## 注意事项
 - iOS 11 对于音频播放更加严格，建议 iOS 10 及以上全部使用 WebAudio 模式播放。
