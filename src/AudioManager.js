@@ -1,4 +1,4 @@
-import { com } from './index';
+import { audioUrlParser } from './audioParser';
 import Audio from './Audio';
 
 /**
@@ -7,7 +7,6 @@ import Audio from './Audio';
  * @class
  */
 class AudioManager {
-
   constructor() {
     /**
      * 实例化之后的音效集合
@@ -24,7 +23,7 @@ class AudioManager {
    * @return {Tiny.audio.com.Audio}
    */
   getAudio(name) {
-    const audio = new Audio(AudioManager.audios[com.audioUrlParser(name) || name], this);
+    const audio = new Audio(AudioManager.audios[audioUrlParser(name) || name], this);
     this.sounds.push(audio);
     return audio;
   }
@@ -43,6 +42,7 @@ class AudioManager {
 
   /**
    * 暂停所有音效，入参是 `false` 就播放所有音效
+   *
    * @param {boolean} value
    */
   pause(value) {
@@ -65,7 +65,6 @@ class AudioManager {
   resume() {
     return this.pause(false);
   }
-
 }
 
 /**

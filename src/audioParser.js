@@ -11,7 +11,7 @@ const _mimeTypes = {
 };
 
 export function audioParser() {
-  return function (resource, next) {
+  return function(resource, next) {
     if (!utils.isAudioSupported || !resource.data) return next();
 
     const ext = _getExt(resource.url);
@@ -77,7 +77,7 @@ function _canPlay(ext) {
 function _getCanPlayExtension() {
   const audio = new Audio();
   return Tiny.detect(_allowedExt,
-    function (extension) {
+    function(extension) {
       return audio.canPlayType(_mimeTypes[extension]) ? extension : null;
     });
 }

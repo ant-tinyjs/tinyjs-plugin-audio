@@ -19,10 +19,10 @@ if (isAudioSupported) {
   isM4aSupported = audio.canPlayType('audio/mp4; codecs="mp4a.40.5"') !== '';
 
   //Add some config to the pixi loader
-  if (isMp3Supported)_setAudioExt('mp3');
-  if (isOggSupported)_setAudioExt('ogg');
-  if (isWavSupported)_setAudioExt('wav');
-  if (isM4aSupported)_setAudioExt('m4a');
+  if (isMp3Supported) _setAudioExt('mp3');
+  if (isOggSupported) _setAudioExt('ogg');
+  if (isWavSupported) _setAudioExt('wav');
+  if (isM4aSupported) _setAudioExt('m4a');
 
   if (isWebAudioSupported) {
     createGainNode = function createGainNode() {

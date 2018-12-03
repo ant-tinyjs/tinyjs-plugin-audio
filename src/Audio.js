@@ -9,8 +9,8 @@ import utils from './utils';
 class Audio extends Tiny.EventEmitter {
   /**
    *
-   * @param {AudioBuffer|HTMLAudioElement}  data    音效数据
-   * @param {Tiny.audio.manager}       manager 音效管理对象
+   * @param {AudioBuffer|HTMLAudioElement} data - 音效数据
+   * @param {Tiny.audio.manager} manager - 音效管理对象
    */
   constructor(data, manager) {
     super();
@@ -190,7 +190,8 @@ class Audio extends Tiny.EventEmitter {
 
   /**
    * 音频音量调节range(0, 1)
-   * @param {number} value 音量的值
+   *
+   * @param {number} value - 音量的值
    * @member {Tiny.audio.com.Audio}
    * @default 1
    */
@@ -209,7 +210,8 @@ class Audio extends Tiny.EventEmitter {
 
   /**
    * 设置音频静音
-   * @param {boolean} value 是否静音
+   *
+   * @param {boolean} value - 是否静音
    * @member {Tiny.audio.com.Audio}
    * @default false
    */

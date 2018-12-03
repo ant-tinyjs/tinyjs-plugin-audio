@@ -9,8 +9,8 @@ import utils from './utils';
 class AudioAnalyser {
   /**
    *
-   * @param {Audio}  TinyAudio对象    音频对象
-   * @param {fftSize} fftSize 快速傅里叶变换数据量(数据量的大小根据频谱分析的需要，一般为2的n次方，如512，1024，2048，4096等)
+   * @param {Audio} TinyAudio对象 - 音频对象
+   * @param {fftSize} fftSize - 快速傅里叶变换数据量(数据量的大小根据频谱分析的需要，一般为2的n次方，如512，1024，2048，4096等)
    */
   constructor(audio, fftSize) {
     if (utils.isWebAudioSupported) {

@@ -16,7 +16,7 @@
 import utils from './utils';
 import AudioManager from './AudioManager';
 import Audio from './Audio';
-import {audioParser, audioUrlParser} from './audioParser';
+import { audioParser, audioUrlParser } from './audioParser';
 import AudioAnalyser from './AudioAnalyser';
 
 /**
@@ -61,7 +61,7 @@ const loader = Tiny.loaders.Loader;
 loader.addTinyMiddleware(com.audioParser);
 
 const baseAdd = loader.prototype.add;
-loader.prototype.add = function (name, url, options, cb) {
+loader.prototype.add = function(name, url, options, cb) {
   if (typeof name === 'object') {
     if (Object.prototype.toString.call(name.url) === '[object Array]') {
       name.url = com.audioUrlParser(name.url);
@@ -73,7 +73,7 @@ loader.prototype.add = function (name, url, options, cb) {
   }
 
   if (Tiny.isArray(name)) {
-    name.forEach(function (item, i) {
+    name.forEach(function(item, i) {
       let s;
       if (item.url) {
         s = com.audioUrlParser(item.url);
